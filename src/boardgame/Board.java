@@ -35,21 +35,21 @@ public class Board {
 		this.columns = columns;
 	}
 
-	public Piece piece(int row, int column) throws BoardException {
+	public Piece piece(int row, int column)  {
 		if (row >=0 && row < this.rows && column >= 0 && column < this.columns) {
 			return pieces[row][column];
 		}
 		throw new BoardException("This position exceeds the board.");
 	}
 
-	public Piece piece(Position position) throws BoardException {
+	public Piece piece(Position position)  {
 		if (position.getRow() >=0 && position.getRow() < this.rows && position.getColumn()>=0 && position.getColumn() < this.columns) {
 			return pieces[position.getRow()][position.getColumn()];
 		}
 		throw new BoardException("This position exceeds the board.");
 	}
 
-	public void placePiece(Piece piece, Position position) throws BoardException {
+	public void placePiece(Piece piece, Position position)  {
 		if (position.getRow() >=0 && position.getRow() < this.rows && position.getColumn()>=0 && position.getColumn() < this.columns) {
 			this.pieces[position.getRow()][position.getColumn()] = piece;
 		} else {
@@ -58,7 +58,7 @@ public class Board {
 
 	}
 
-	public boolean positionExists(Position position) throws BoardException {
+	public boolean positionExists(Position position)  {
 		if (position.getRow() >=0 && position.getRow() < this.rows && position.getColumn()>=0 && position.getColumn() < this.columns) {
 			return true;
 		} else {
@@ -67,7 +67,7 @@ public class Board {
 
 	}
 
-	public boolean thereIsAPiece(Position position) throws BoardException {
+	public boolean thereIsAPiece(Position position)  {
 		if (this.positionExists(position) && this.piece(position) instanceof ChessPiece) {
 			return true;
 		}

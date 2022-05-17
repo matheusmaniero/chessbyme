@@ -10,12 +10,11 @@ public class ChessMatch {
 
 	private Board board;
 
-	public ChessMatch() throws BoardException {
-		this.board = new Board(8, 8);		
-			initialSetup();
-		
-		}
-	
+	public ChessMatch() {
+		this.board = new Board(8, 8);
+		initialSetup();
+
+	}
 
 	public Board getBoard() {
 		return board;
@@ -27,7 +26,7 @@ public class ChessMatch {
 			for (int j = 0; j < chessPieces[i].length; j++) {
 				try {
 					chessPieces[i][j] = (ChessPiece) this.getBoard().piece(i, j);
-				} catch (BoardException e) {					
+				} catch (BoardException e) {
 					e.getMessage();
 				}
 			}
@@ -38,18 +37,13 @@ public class ChessMatch {
 
 	}
 
-	public void initialSetup() throws BoardException {
-		
-		
-			this.getBoard().placePiece(new King(this.board, Color.WHITE), new Position(5, 7));
-			this.getBoard().placePiece(new Rook(this.board, Color.WHITE), new Position(0, 7));
-			this.getBoard().placePiece(new King(this.board, Color.BLACK), new Position(7, 6));
-			this.getBoard().placePiece(new Rook(this.board, Color.BLACK), new Position(5, 1));
-		
-		
-	}
-	
-		
+	public void initialSetup() {
+
+		this.getBoard().placePiece(new King(this.board, Color.WHITE), new Position(5, 7));
+		this.getBoard().placePiece(new Rook(this.board, Color.WHITE), new Position(0, 7));
+		this.getBoard().placePiece(new King(this.board, Color.BLACK), new Position(7, 6));
+		this.getBoard().placePiece(new Rook(this.board, Color.BLACK), new Position(5, 1));
+
 	}
 
-
+}
