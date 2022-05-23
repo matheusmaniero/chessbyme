@@ -22,7 +22,9 @@ public class Program {
 					UI.printBoard(chessMatch);
 					UI.readChessPosition(sc, chessMatch);
 				}catch (BoardException e) {
+					UI.clearScreen();
 					System.out.println(e.getMessage());
+					System.out.println();
 					
 				}
 				

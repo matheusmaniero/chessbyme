@@ -68,11 +68,17 @@ public class UI {
 		String targetString = sc.nextLine();
 		ChessPosition targetChessPosition = new ChessPosition(targetString.charAt(0),
 				Integer.parseInt(targetString.substring(1)));
-		
+
 		chessMatch.getBoard().positionExists(targetChessPosition.toPosition());
-		
 
 		chessMatch.performChessMove(sourceChessPosition, targetChessPosition);
+		clearScreen();
+	}
+	
+	
+	public static void clearScreen() {
+		 System.out.print("\033[H\033[2J");  
+		    System.out.flush();  
 	}
 
 }
