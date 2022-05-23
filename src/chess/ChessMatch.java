@@ -24,11 +24,8 @@ public class ChessMatch {
 		ChessPiece[][] chessPieces = new ChessPiece[this.getBoard().getRows()][this.getBoard().getColumns()];
 		for (int i = 0; i < chessPieces.length; i++) {
 			for (int j = 0; j < chessPieces[i].length; j++) {
-				try {
-					chessPieces[i][j] = (ChessPiece) this.getBoard().piece(i, j);
-				} catch (BoardException e) {
-					e.getMessage();
-				}
+				chessPieces[i][j] = (ChessPiece) this.getBoard().piece(i, j);
+
 			}
 
 		}
@@ -39,10 +36,10 @@ public class ChessMatch {
 
 	public void initialSetup() {
 
-		this.getBoard().placePiece(new King(this.board, Color.WHITE), new Position(5, 7));
-		this.getBoard().placePiece(new Rook(this.board, Color.WHITE), new Position(0, 7));
-		this.getBoard().placePiece(new King(this.board, Color.BLACK), new Position(7, 6));
-		this.getBoard().placePiece(new Rook(this.board, Color.BLACK), new Position(5, 1));
+		this.getBoard().placePiece(new King(this.board, Color.WHITE), new ChessPosition('e',1).toPosition());
+		this.getBoard().placePiece(new Rook(this.board, Color.WHITE), new ChessPosition('d',7).toPosition());
+		this.getBoard().placePiece(new King(this.board, Color.BLACK), new ChessPosition('b',2).toPosition());
+		this.getBoard().placePiece(new Rook(this.board, Color.BLACK), new ChessPosition('a',5).toPosition());
 
 	}
 
