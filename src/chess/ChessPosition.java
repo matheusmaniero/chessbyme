@@ -28,7 +28,7 @@ public class ChessPosition {
 		this.row = row;
 	}
 	
-	protected Position toPosition() {
+	public Position toPosition() {
 		int matrixColumn = (int) (this.column - 'a');
 		int matrixRow = 8 - this.row;
 		return new Position (matrixRow,matrixColumn);

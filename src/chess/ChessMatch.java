@@ -34,12 +34,35 @@ public class ChessMatch {
 
 	}
 
+	public void performChessMove(ChessPosition sourcePosition, ChessPosition targetPosition) {
+
+		if (!(this.validateSourcePosition(sourcePosition))) {
+			throw new ChessException("This position doesn't exists. Please select a valid positon.");
+		} else {
+			this.makeMove(sourcePosition, targetPosition);
+		}
+
+	}
+
+	public boolean validateSourcePosition(ChessPosition sourcePosition) {
+		if ((this.getBoard().positionExists(sourcePosition.toPosition()))) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public void makeMove(ChessPosition sourcePosition, ChessPosition targetPosition) {
+		ChessPiece movingPiece = (ChessPiece) this.getBoard().removePiece(sourcePosition.toPosition());
+		this.getBoard().placePiece(movingPiece, targetPosition.toPosition());
+	}
+
 	public void initialSetup() {
 
-		this.getBoard().placePiece(new King(this.board, Color.WHITE), new ChessPosition('e',1).toPosition());
-		this.getBoard().placePiece(new Rook(this.board, Color.WHITE), new ChessPosition('d',7).toPosition());
-		this.getBoard().placePiece(new King(this.board, Color.BLACK), new ChessPosition('b',2).toPosition());
-		this.getBoard().placePiece(new Rook(this.board, Color.BLACK), new ChessPosition('a',5).toPosition());
+		this.getBoard().placePiece(new King(this.board, Color.WHITE), new ChessPosition('e', 1).toPosition());
+		this.getBoard().placePiece(new Rook(this.board, Color.WHITE), new ChessPosition('d', 7).toPosition());
+		this.getBoard().placePiece(new King(this.board, Color.BLACK), new ChessPosition('b', 2).toPosition());
+		this.getBoard().placePiece(new Rook(this.board, Color.BLACK), new ChessPosition('a', 5).toPosition());
 
 	}
 
