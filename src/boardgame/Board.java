@@ -54,6 +54,7 @@ public class Board {
 		if (position.getRow() >= 0 && position.getRow() < this.rows && position.getColumn() >= 0
 				&& position.getColumn() < this.columns) {
 			this.pieces[position.getRow()][position.getColumn()] = piece;
+			piece.position = position;
 		} else {
 			throw new BoardException("This position exceeds the board.");
 		}
@@ -77,19 +78,21 @@ public class Board {
 		if (position.getRow() >= 0 && position.getRow() < this.rows && position.getColumn() >= 0
 				&& position.getColumn() < this.columns) {
 			return true;
-		} else {
-			throw new BoardException("This position doesn't exists on the board.");
+		}
+		throw new BoardException("This position doesn't exists on the board."); 
+		
+			
 			
 		}		
 		
 
-	}
+	
 
 	public boolean thereIsAPiece(Position position) {
 		if (this.positionExists(position) && this.piece(position) instanceof ChessPiece) {
 			return true;
 		}else {
-			throw new BoardException("There is no piece on this position.");
+			return false;
 		}
 		
 	}

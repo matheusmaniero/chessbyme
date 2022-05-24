@@ -36,8 +36,8 @@ public class ChessMatch {
 
 	public void performChessMove(ChessPosition sourcePosition, ChessPosition targetPosition) {
 
-		if (!(this.validateSourcePosition(sourcePosition))) {
-			throw new ChessException("This position doesn't exists. Please select a valid positon.");
+		if (!(this.validateSourcePosition(sourcePosition) && this.validateTargetPosition(targetPosition,sourcePosition))) {
+			throw new ChessException("Is not possible to move to this position");
 		} else {
 			this.makeMove(sourcePosition, targetPosition);
 		}
@@ -45,11 +45,20 @@ public class ChessMatch {
 	}
 
 	public boolean validateSourcePosition(ChessPosition sourcePosition) {
-		if ((this.getBoard().positionExists(sourcePosition.toPosition()))) {
+		if ((this.getBoard().positionExists(sourcePosition.toPosition())
+				&& this.getBoard().piece(sourcePosition.toPosition()).isThereAnyPossibleMove())) {
 			return true;
 		}
 
 		return false;
+	}
+
+	public boolean validateTargetPosition(ChessPosition targetPosition, ChessPosition sourcePosition) {
+		if (this.getBoard().positionExists(targetPosition.toPosition()) && this.getBoard().piece(sourcePosition.toPosition()).possibleMove(targetPosition.toPosition()) ) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public void makeMove(ChessPosition sourcePosition, ChessPosition targetPosition) {
@@ -59,9 +68,11 @@ public class ChessMatch {
 
 	public void initialSetup() {
 
-		this.getBoard().placePiece(new King(this.board, Color.WHITE), new ChessPosition('e', 1).toPosition());
+		// this.getBoard().placePiece(new King(this.board, Color.WHITE), new
+		// ChessPosition('e', 1).toPosition());
 		this.getBoard().placePiece(new Rook(this.board, Color.WHITE), new ChessPosition('d', 7).toPosition());
-		this.getBoard().placePiece(new King(this.board, Color.BLACK), new ChessPosition('b', 2).toPosition());
+		// this.getBoard().placePiece(new King(this.board, Color.BLACK), new
+		// ChessPosition('b', 2).toPosition());
 		this.getBoard().placePiece(new Rook(this.board, Color.BLACK), new ChessPosition('a', 5).toPosition());
 
 	}
