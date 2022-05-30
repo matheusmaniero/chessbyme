@@ -1,6 +1,7 @@
 package chess;
 
 import boardgame.Board;
+import chess.pieces.King;
 import chess.pieces.Rook;
 
 public class ChessMatch {
@@ -33,7 +34,8 @@ public class ChessMatch {
 
 	public void performChessMove(ChessPosition sourcePosition, ChessPosition targetPosition) {
 
-		if (!(this.validateSourcePosition(sourcePosition) && this.validateTargetPosition(targetPosition,sourcePosition))) {
+		if (!(this.validateSourcePosition(sourcePosition)
+				&& this.validateTargetPosition(targetPosition, sourcePosition))) {
 			throw new ChessException("Is not possible to move to this position");
 		} else {
 			this.makeMove(sourcePosition, targetPosition);
@@ -51,7 +53,8 @@ public class ChessMatch {
 	}
 
 	public boolean validateTargetPosition(ChessPosition targetPosition, ChessPosition sourcePosition) {
-		if (this.getBoard().positionExists(targetPosition.toPosition()) && this.getBoard().piece(sourcePosition.toPosition()).possibleMove(targetPosition.toPosition()) ) {
+		if (this.getBoard().positionExists(targetPosition.toPosition())
+				&& this.getBoard().piece(sourcePosition.toPosition()).possibleMove(targetPosition.toPosition())) {
 			return true;
 		} else {
 			return false;
@@ -65,48 +68,21 @@ public class ChessMatch {
 
 	public void initialSetup() {
 
-		// this.getBoard().placePiece(new King(this.board, Color.WHITE), new
-		// ChessPosition('e', 1).toPosition());
-		this.getBoard().placePiece(new Rook(this.board, Color.WHITE), new ChessPosition('d', 7).toPosition());
-		// this.getBoard().placePiece(new King(this.board, Color.BLACK), new
-		// ChessPosition('b', 2).toPosition());
-		this.getBoard().placePiece(new Rook(this.board, Color.BLACK), new ChessPosition('a', 5).toPosition());
+		this.getBoard().placePiece(new King(this.board, Color.WHITE), new ChessPosition('b',1).toPosition());
+		//this.getBoard().placePiece(new Rook(this.board, Color.WHITE), new ChessPosition('h',1).toPosition());
+		//this.getBoard().placePiece(new King(this.board, Color.BLACK), new ChessPosition('f',7).toPosition());
+		this.getBoard().placePiece(new Rook(this.board, Color.BLACK), new ChessPosition('h',1).toPosition());
 
 	}
-	
-	public boolean[][] possibleMoves(ChessPosition sourcePosition){
+
+	public boolean[][] possibleMoves(ChessPosition sourcePosition) {
 		if (!board.thereIsAPiece(sourcePosition.toPosition())) {
 			throw new ChessException("There is no piece in this position");
 		}
-		
-		
-		ChessPiece piece = (ChessPiece)this.getBoard().piece(sourcePosition.toPosition());
+
+		ChessPiece piece = (ChessPiece) this.getBoard().piece(sourcePosition.toPosition());
 		boolean[][] mat = piece.possibleMoves();
 		return mat;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 }

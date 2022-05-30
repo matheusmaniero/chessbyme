@@ -26,48 +26,41 @@ public class Rook extends ChessPiece {
 		// north
 		pos.setValues(this.position.getRow() - 1, this.position.getColumn());
 
-		while (pos.getColumn() >= 0 && pos.getColumn() <= 7 && pos.getRow() >= 0 && pos.getRow() <= 7) {
+		while (pos.getColumn() >= 0 && pos.getColumn() <= 7 && pos.getRow() >= 0 && pos.getRow() <= 7 && !this.getBoard().thereIsAPiece(pos)) {
 
-			if (!this.getBoard().thereIsAPiece(pos)) {
+			
 				mat[pos.getRow()][pos.getColumn()] = true;
 				pos.setValues(pos.getRow() - 1, pos.getColumn());
-			}
-
 		}
+		
+		
+		
+				// south
 
-		// south
+			pos.setValues(this.position.getRow() + 1, this.position.getColumn());
 
-		pos.setValues(this.position.getRow() + 1, this.position.getColumn());
-		while (pos.getColumn() >= 0 && pos.getColumn() <= 7 && pos.getRow() >= 0 && pos.getRow() <= 7) {
-
-			if (!this.getBoard().thereIsAPiece(pos)) {
+			while (pos.getColumn() >= 0 && pos.getColumn() <= 7 && pos.getRow() >= 0 && pos.getRow() <= 7 && !this.getBoard().thereIsAPiece(pos)) {
 				mat[pos.getRow()][pos.getColumn()] = true;
 				pos.setValues(pos.getRow() + 1, pos.getColumn());
 			}
 
-		}
+			// left
+			pos.setValues(this.position.getRow(), this.position.getColumn() - 1);
 
-		// left
-		pos.setValues(this.position.getRow(), this.position.getColumn() - 1);
-		while (pos.getColumn() >= 0 && pos.getColumn() <= 7 && pos.getRow() >= 0 && pos.getRow() <= 7) {
-
-			if (!this.getBoard().thereIsAPiece(pos)) {
+			while (pos.getColumn() >= 0 && pos.getColumn() <= 7 && pos.getRow() >= 0 && pos.getRow() <= 7 && !this.getBoard().thereIsAPiece(pos)) {
 				mat[pos.getRow()][pos.getColumn()] = true;
-				pos.setValues(pos.getRow() , pos.getColumn()-1);
+				pos.setValues(pos.getRow(), pos.getColumn() - 1);
 			}
 
-		}
+			// right
+			pos.setValues(this.position.getRow(), this.position.getColumn() + 1);
 
-		// right
-		pos.setValues(this.position.getRow(), this.position.getColumn() + 1);
-		while (pos.getColumn() >= 0 && pos.getColumn() <= 7 && pos.getRow() >= 0 && pos.getRow() <= 7) {
-
-			if (!this.getBoard().thereIsAPiece(pos)) {
+			while (pos.getColumn() >= 0 && pos.getColumn() <= 7 && pos.getRow() >= 0 && pos.getRow() <= 7 && !this.getBoard().thereIsAPiece(pos)) {
 				mat[pos.getRow()][pos.getColumn()] = true;
-				pos.setValues(pos.getRow() , pos.getColumn()+1);
+				pos.setValues(pos.getRow(), pos.getColumn() + 1);
 			}
 
-		}
+		
 
 		return mat;
 
