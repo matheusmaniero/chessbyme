@@ -2,7 +2,7 @@ package application;
 
 import java.util.Scanner;
 
-import boardgame.BoardException;
+import boardgame.Position;
 import chess.ChessMatch;
 import chess.ChessPiece;
 import chess.ChessPosition;
@@ -28,13 +28,15 @@ public class UI {
 	public static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
 	public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
 	public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
+	static ChessPosition sourceChessPosition;
+	boolean[][] matPossibleMoves;
 
 	public static void printBoard(ChessMatch chessMatch) {
 		for (int i = 0; i < chessMatch.getPieces().length; i++) {
 			System.out.print(8 - i);
 
 			for (int j = 0; j < chessMatch.getPieces().length; j++) {
-				printPiece(chessMatch.getPieces()[i][j]);
+				printPiece(chessMatch.getPieces()[i][j], false);
 
 			}
 			System.out.println();
@@ -43,13 +45,35 @@ public class UI {
 		System.out.println("  a  b  c  d  e  f  g  h");
 	}
 
-	public static void printPiece(ChessPiece piece) {
+	public static void printBoard(ChessMatch chessMatch, boolean[][] matPossibleMoves) {
+		for (int i = 0; i < chessMatch.getPieces().length; i++) {
+			System.out.print(8 - i);
+
+			for (int j = 0; j < chessMatch.getPieces().length; j++) {
+				printPiece(chessMatch.getPieces()[i][j], matPossibleMoves[i][j]);
+
+			}
+			System.out.println();
+		}
+
+		System.out.println("  a  b  c  d  e  f  g  h");
+	}
+
+	public static void printPiece(ChessPiece piece, boolean background) {
+
+		if (background) {
+			System.out.print(ANSI_BLUE_BACKGROUND);
+		}
 		if (piece == null) {
-			System.out.print(" - ");
-		} else if (piece.getColor() == Color.BLACK) {
-			System.out.print(ANSI_BLUE_BACKGROUND + ANSI_YELLOW + " " + piece + " " + ANSI_RESET);
+			System.out.print(" - " + ANSI_RESET);
 		} else {
-			System.out.print(ANSI_WHITE_BACKGROUND + ANSI_BLACK + " " + piece + " " + ANSI_RESET);
+			if (piece.getColor() == Color.WHITE) {
+				System.out.print(ANSI_WHITE + " " + piece + "" + ANSI_RESET);
+			} else {
+				System.out.print(ANSI_YELLOW + " " + piece + "" + ANSI_RESET);
+			}
+
+			System.out.print(" ");
 		}
 
 	}
@@ -58,8 +82,11 @@ public class UI {
 		System.out.println();
 		System.out.print("Source: ");
 		String sourceString = sc.nextLine();
-		ChessPosition sourceChessPosition = new ChessPosition(sourceString.charAt(0),
-				Integer.parseInt(sourceString.substring(1)));
+		sourceChessPosition = new ChessPosition(sourceString.charAt(0), Integer.parseInt(sourceString.substring(1)));
+
+		boolean[][] matPossibleMoves = chessMatch.possibleMoves(sourceChessPosition);
+		clearScreen();
+		printBoard(chessMatch, matPossibleMoves);
 
 		chessMatch.getBoard().positionExists(sourceChessPosition.toPosition());
 		chessMatch.getBoard().thereIsAPiece(sourceChessPosition.toPosition());
@@ -74,11 +101,10 @@ public class UI {
 		chessMatch.performChessMove(sourceChessPosition, targetChessPosition);
 		clearScreen();
 	}
-	
-	
+
 	public static void clearScreen() {
-		 System.out.print("\033[H\033[2J");  
-		    System.out.flush();  
+		System.out.print("\033[H\033[2J");
+		System.out.flush();
 	}
 
 }

@@ -1,9 +1,6 @@
 package chess;
 
 import boardgame.Board;
-import boardgame.BoardException;
-import boardgame.Position;
-import chess.pieces.King;
 import chess.pieces.Rook;
 
 public class ChessMatch {
@@ -76,5 +73,35 @@ public class ChessMatch {
 		this.getBoard().placePiece(new Rook(this.board, Color.BLACK), new ChessPosition('a', 5).toPosition());
 
 	}
+	
+	public boolean[][] possibleMoves(ChessPosition sourcePosition){
+		ChessPiece piece = (ChessPiece)this.getBoard().piece(sourcePosition.toPosition());
+		boolean[][] mat = piece.possibleMoves();
+		return mat;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

@@ -34,7 +34,7 @@ public class ChessPosition {
 		return new Position (matrixRow,matrixColumn);
 	}
 	
-	protected ChessPosition fromPosition(Position position) {
+	public ChessPosition fromPosition(Position position) {
 		int matrixRow = position.getRow();
 		int matrixColumn = position.getColumn();
 		char chessColumn = (char) ((char) matrixColumn + 'a');
