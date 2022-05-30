@@ -75,6 +75,11 @@ public class ChessMatch {
 	}
 	
 	public boolean[][] possibleMoves(ChessPosition sourcePosition){
+		if (!board.thereIsAPiece(sourcePosition.toPosition())) {
+			throw new ChessException("There is no piece in this position");
+		}
+		
+		
 		ChessPiece piece = (ChessPiece)this.getBoard().piece(sourcePosition.toPosition());
 		boolean[][] mat = piece.possibleMoves();
 		return mat;
