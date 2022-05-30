@@ -87,7 +87,8 @@ public class UI {
 		boolean[][] matPossibleMoves = chessMatch.possibleMoves(sourceChessPosition);
 		clearScreen();
 		printBoard(chessMatch, matPossibleMoves);
-
+		
+		chessMatch.validateSourcePosition(sourceChessPosition);
 		chessMatch.getBoard().positionExists(sourceChessPosition.toPosition());
 		chessMatch.getBoard().thereIsAPiece(sourceChessPosition.toPosition());
 

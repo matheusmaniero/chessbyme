@@ -1,12 +1,19 @@
 package chess;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import boardgame.Board;
+import boardgame.Piece;
 import chess.pieces.King;
 import chess.pieces.Rook;
 
 public class ChessMatch {
 
 	private Board board;
+	private Integer turn =  1;
+	private Color currentPlayer = Color.WHITE;
+	List<Piece> piecesOnTheBoard = new ArrayList<>();
 
 	public ChessMatch() {
 		this.board = new Board(8, 8);
@@ -39,11 +46,18 @@ public class ChessMatch {
 			throw new ChessException("Is not possible to move to this position");
 		} else {
 			this.makeMove(sourcePosition, targetPosition);
+			this.nextTurn();
 		}
 
 	}
 
 	public boolean validateSourcePosition(ChessPosition sourcePosition) {
+		ChessPiece piece = (ChessPiece)this.getBoard().piece(sourcePosition.toPosition());
+		if (piece.getColor() != this.currentPlayer) {
+			throw new ChessException("This piece is not yours.");
+		}
+		
+		
 		if ((this.getBoard().positionExists(sourcePosition.toPosition())
 				&& this.getBoard().piece(sourcePosition.toPosition()).isThereAnyPossibleMove())) {
 			return true;
@@ -83,6 +97,20 @@ public class ChessMatch {
 		ChessPiece piece = (ChessPiece) this.getBoard().piece(sourcePosition.toPosition());
 		boolean[][] mat = piece.possibleMoves();
 		return mat;
+	}
+	
+	
+	private Color nextTurn() {
+		if (this.currentPlayer == Color.WHITE) {
+			this.currentPlayer = Color.BLACK;
+		}else {
+			this.currentPlayer = Color.WHITE;
+		}
+		
+		this.turn++;
+		
+		return currentPlayer;
+		
 	}
 
 }
