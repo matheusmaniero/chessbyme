@@ -11,16 +11,34 @@ import chess.pieces.Rook;
 public class ChessMatch {
 
 	private Board board;
-	private Integer turn =  1;
+	private Integer turn = 1;
 	private Color currentPlayer = Color.WHITE;
-	List<ChessPiece> piecesOnTheBoard = new ArrayList<>();
-	List<ChessPiece> capturedPieces = new ArrayList<>();
+	private List<ChessPiece> piecesOnTheBoard = new ArrayList<>();
+	private List<ChessPiece> capturedPieces = new ArrayList<>();
 
 	public ChessMatch() {
 		this.board = new Board(8, 8);
 		initialSetup();
 		loadPiecesOnBoardList();
 
+	}
+	
+
+	public Integer getTurn() {
+		return turn;
+	}
+
+
+	public Color getCurrentPlayer() {
+		return currentPlayer;
+	}
+
+	public List<ChessPiece> getPiecesOnTheBoard() {
+		return piecesOnTheBoard;
+	}
+
+	public List<ChessPiece> getCapturedPieces() {
+		return capturedPieces;
 	}
 
 	public Board getBoard() {
@@ -54,12 +72,11 @@ public class ChessMatch {
 	}
 
 	public boolean validateSourcePosition(ChessPosition sourcePosition) {
-		ChessPiece piece = (ChessPiece)this.getBoard().piece(sourcePosition.toPosition());
+		ChessPiece piece = (ChessPiece) this.getBoard().piece(sourcePosition.toPosition());
 		if (piece.getColor() != this.currentPlayer) {
 			throw new ChessException("This piece is not yours.");
 		}
-		
-		
+
 		if ((this.getBoard().positionExists(sourcePosition.toPosition())
 				&& this.getBoard().piece(sourcePosition.toPosition()).isThereAnyPossibleMove())) {
 			return true;
@@ -79,15 +96,23 @@ public class ChessMatch {
 
 	public void makeMove(ChessPosition sourcePosition, ChessPosition targetPosition) {
 		ChessPiece movingPiece = (ChessPiece) this.getBoard().removePiece(sourcePosition.toPosition());
+		if (this.getBoard().thereIsAPiece(targetPosition.toPosition())) {
+			ChessPiece pieceOnTarget = (ChessPiece) this.getBoard().piece(targetPosition.toPosition());
+			if (pieceOnTarget.getColor() != currentPlayer) {
+				this.piecesOnTheBoard.removeIf(x -> x == pieceOnTarget);
+				this.capturedPieces.add(pieceOnTarget);
+			}
+		}
+
 		this.getBoard().placePiece(movingPiece, targetPosition.toPosition());
 	}
 
 	public void initialSetup() {
 
-		//this.getBoard().placePiece(new King(this.board, Color.WHITE), new ChessPosition('d',3).toPosition());
-		this.getBoard().placePiece(new Rook(this.board, Color.WHITE), new ChessPosition('d',1).toPosition());
-		this.getBoard().placePiece(new King(this.board, Color.BLACK), new ChessPosition('d',3).toPosition());
-		//this.getBoard().placePiece(new Rook(this.board, Color.BLACK), new ChessPosition('d',2).toPosition());
+		this.getBoard().placePiece(new King(this.board, Color.WHITE), new ChessPosition('a', 3).toPosition());
+		this.getBoard().placePiece(new Rook(this.board, Color.WHITE), new ChessPosition('d', 1).toPosition());
+		this.getBoard().placePiece(new King(this.board, Color.BLACK), new ChessPosition('d', 3).toPosition());
+		this.getBoard().placePiece(new Rook(this.board, Color.BLACK), new ChessPosition('f', 2).toPosition());
 
 	}
 
@@ -100,31 +125,27 @@ public class ChessMatch {
 		boolean[][] mat = piece.possibleMoves();
 		return mat;
 	}
-	
-	
+
 	private Color nextTurn() {
 		if (this.currentPlayer == Color.WHITE) {
 			this.currentPlayer = Color.BLACK;
-		}else {
+		} else {
 			this.currentPlayer = Color.WHITE;
 		}
-		
+
 		this.turn++;
-		
+
 		return currentPlayer;
-		
+
 	}
-	
+
 	public void loadPiecesOnBoardList() {
 		ChessPiece[][] chessPieces = this.getPieces();
-		for (int i =0; i<chessPieces.length; i++) {
-			for (int j =0; j<chessPieces.length; j++) {
+		for (int i = 0; i < chessPieces.length; i++) {
+			for (int j = 0; j < chessPieces.length; j++) {
 				piecesOnTheBoard.add(chessPieces[i][j]);
 			}
 		}
 	}
-	
-	
-	
 
 }

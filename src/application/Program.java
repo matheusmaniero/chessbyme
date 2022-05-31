@@ -7,33 +7,38 @@ import chess.ChessMatch;
 
 public class Program {
 
-	public static void main(String[] args)  {		
-		
+	public static void main(String[] args) {
+
 		Scanner sc = new Scanner(System.in);
-		
+
 		ChessMatch chessMatch;
-		
-			chessMatch = new ChessMatch();
-			
-			
-			while(true) {
+
+		chessMatch = new ChessMatch();
+
+		while (true) {
+
+			try {
+				UI.printBoard(chessMatch);
+				System.out.println();
+				System.out.println("Captured Pieces: ");
+				System.out.println(UI.printWhiteCapturedPieces(chessMatch.getCapturedPieces()));				
+				System.out.println(UI.printBlackCapturedPieces(chessMatch.getCapturedPieces()));
+				System.out.println();
+				System.out.println(UI.printTurn(chessMatch));
 				
-				try {
-					UI.printBoard(chessMatch);
-					UI.readChessPosition(sc, chessMatch);
-					
-				}catch (BoardException e) {
-					UI.clearScreen();
-					System.out.println(e.getMessage());
-					System.out.println();
-					
-				}
-				
-				
-				
+
+				UI.readChessPosition(sc, chessMatch);
+				System.out.println();
+
+			} catch (BoardException e) {
+				UI.clearScreen();
+				System.out.println(e.getMessage());
+				System.out.println();
+
 			}
-		
-		
+
+		}
+
 	}
 
 }

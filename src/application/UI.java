@@ -1,8 +1,9 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
-import boardgame.Position;
 import chess.ChessMatch;
 import chess.ChessPiece;
 import chess.ChessPosition;
@@ -87,7 +88,7 @@ public class UI {
 		boolean[][] matPossibleMoves = chessMatch.possibleMoves(sourceChessPosition);
 		clearScreen();
 		printBoard(chessMatch, matPossibleMoves);
-		
+
 		chessMatch.validateSourcePosition(sourceChessPosition);
 		chessMatch.getBoard().positionExists(sourceChessPosition.toPosition());
 		chessMatch.getBoard().thereIsAPiece(sourceChessPosition.toPosition());
@@ -106,6 +107,56 @@ public class UI {
 	public static void clearScreen() {
 		System.out.print("\033[H\033[2J");
 		System.out.flush();
+	}
+
+	public static String printBlackCapturedPieces(List<ChessPiece> capturedPieces) {
+		List<ChessPiece> blackCapturedPieces = new ArrayList<>();
+		StringBuilder sb = new StringBuilder();
+		for (ChessPiece x : capturedPieces) {
+			if (x.getColor() == Color.BLACK) {
+				blackCapturedPieces.add(x);
+			}
+		}
+		sb.append(ANSI_YELLOW + "BLACK: [ ");
+		for (ChessPiece x : blackCapturedPieces) {
+
+			sb.append(" " + x + " ");
+		}
+
+		sb.append(" ]" + ANSI_RESET);
+
+		return sb.toString();
+	}
+
+	public static String printWhiteCapturedPieces(List<ChessPiece> capturedPieces) {
+		List<ChessPiece> whiteCapturedPieces = new ArrayList<>();
+		StringBuilder sb = new StringBuilder();
+		for (ChessPiece x : capturedPieces) {
+			if (x.getColor() == Color.WHITE) {
+				whiteCapturedPieces.add(x);
+			}
+		}
+		sb.append("WHITE: [ ");
+		for (ChessPiece x : whiteCapturedPieces) {
+
+			sb.append(" " + x + " ");
+		}
+
+		sb.append(" ]");
+
+		return sb.toString();
+	}
+
+	public static String printTurn(ChessMatch chessMatch) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Turn number: " + chessMatch.getTurn()+ "\n");
+		if (chessMatch.getCurrentPlayer() == Color.WHITE) {
+			sb.append("White play now.");
+			return sb.toString();
+		}
+
+		sb.append(ANSI_YELLOW + "Black play now" + ANSI_RESET);
+		return sb.toString();
 	}
 
 }
