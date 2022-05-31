@@ -26,41 +26,78 @@ public class Rook extends ChessPiece {
 		// north
 		pos.setValues(this.position.getRow() - 1, this.position.getColumn());
 
-		while (pos.getColumn() >= 0 && pos.getColumn() <= 7 && pos.getRow() >= 0 && pos.getRow() <= 7 && !this.getBoard().thereIsAPiece(pos)) {
+		while (pos.getColumn() >= 0 && pos.getColumn() <= 7 && pos.getRow() >= 0 && pos.getRow() <= 7
+				&& !this.getBoard().thereIsAPiece(pos)) {
 
-			
-				mat[pos.getRow()][pos.getColumn()] = true;
-				pos.setValues(pos.getRow() - 1, pos.getColumn());
+			mat[pos.getRow()][pos.getColumn()] = true;
+
+			pos.setValues(pos.getRow() - 1, pos.getColumn());
 		}
-		
-		
-		
-				// south
 
-			pos.setValues(this.position.getRow() + 1, this.position.getColumn());
+		if (pos.getColumn() >= 0 && pos.getColumn() <= 7 && pos.getRow() >= 0 && pos.getRow() <= 7
+				&& this.isThereOpponentPiece(pos)) {
+			mat[pos.getRow()][pos.getColumn()] = true;
+		}
 
-			while (pos.getColumn() >= 0 && pos.getColumn() <= 7 && pos.getRow() >= 0 && pos.getRow() <= 7 && !this.getBoard().thereIsAPiece(pos)) {
+		// south
+
+		pos.setValues(this.position.getRow() + 1, this.position.getColumn());
+
+		while (pos.getColumn() >= 0 && pos.getColumn() <= 7 && pos.getRow() >= 0 && pos.getRow() <= 7
+				&& !this.getBoard().thereIsAPiece(pos)) {
+			mat[pos.getRow()][pos.getColumn()] = true;
+
+			if (this.isThereOpponentPiece(pos)) {
 				mat[pos.getRow()][pos.getColumn()] = true;
-				pos.setValues(pos.getRow() + 1, pos.getColumn());
 			}
 
-			// left
-			pos.setValues(this.position.getRow(), this.position.getColumn() - 1);
+			pos.setValues(pos.getRow() + 1, pos.getColumn());
 
-			while (pos.getColumn() >= 0 && pos.getColumn() <= 7 && pos.getRow() >= 0 && pos.getRow() <= 7 && !this.getBoard().thereIsAPiece(pos)) {
+		}
+
+		if (pos.getColumn() >= 0 && pos.getColumn() <= 7 && pos.getRow() >= 0 && pos.getRow() <= 7
+				&& this.isThereOpponentPiece(pos)) {
+			mat[pos.getRow()][pos.getColumn()] = true;
+		}
+
+		// left
+		pos.setValues(this.position.getRow(), this.position.getColumn() - 1);
+
+		while (pos.getColumn() >= 0 && pos.getColumn() <= 7 && pos.getRow() >= 0 && pos.getRow() <= 7
+				&& !this.getBoard().thereIsAPiece(pos)) {
+			mat[pos.getRow()][pos.getColumn()] = true;
+
+			if (this.isThereOpponentPiece(pos)) {
 				mat[pos.getRow()][pos.getColumn()] = true;
-				pos.setValues(pos.getRow(), pos.getColumn() - 1);
 			}
 
-			// right
-			pos.setValues(this.position.getRow(), this.position.getColumn() + 1);
+			pos.setValues(pos.getRow(), pos.getColumn() - 1);
+		}
 
-			while (pos.getColumn() >= 0 && pos.getColumn() <= 7 && pos.getRow() >= 0 && pos.getRow() <= 7 && !this.getBoard().thereIsAPiece(pos)) {
+		if (pos.getColumn() >= 0 && pos.getColumn() <= 7 && pos.getRow() >= 0 && pos.getRow() <= 7
+				&& this.isThereOpponentPiece(pos)) {
+			mat[pos.getRow()][pos.getColumn()] = true;
+		}
+
+		// right
+		pos.setValues(this.position.getRow(), this.position.getColumn() + 1);
+
+		while (pos.getColumn() >= 0 && pos.getColumn() <= 7 && pos.getRow() >= 0 && pos.getRow() <= 7
+				&& !this.getBoard().thereIsAPiece(pos)) {
+			mat[pos.getRow()][pos.getColumn()] = true;
+
+			if (this.isThereOpponentPiece(pos)) {
 				mat[pos.getRow()][pos.getColumn()] = true;
-				pos.setValues(pos.getRow(), pos.getColumn() + 1);
 			}
 
-		
+			pos.setValues(pos.getRow(), pos.getColumn() + 1);
+
+		}
+
+		if (pos.getColumn() >= 0 && pos.getColumn() <= 7 && pos.getRow() >= 0 && pos.getRow() <= 7
+				&& this.isThereOpponentPiece(pos)) {
+			mat[pos.getRow()][pos.getColumn()] = true;
+		}
 
 		return mat;
 

@@ -13,11 +13,13 @@ public class ChessMatch {
 	private Board board;
 	private Integer turn =  1;
 	private Color currentPlayer = Color.WHITE;
-	List<Piece> piecesOnTheBoard = new ArrayList<>();
+	List<ChessPiece> piecesOnTheBoard = new ArrayList<>();
+	List<ChessPiece> capturedPieces = new ArrayList<>();
 
 	public ChessMatch() {
 		this.board = new Board(8, 8);
 		initialSetup();
+		loadPiecesOnBoardList();
 
 	}
 
@@ -82,10 +84,10 @@ public class ChessMatch {
 
 	public void initialSetup() {
 
-		this.getBoard().placePiece(new King(this.board, Color.WHITE), new ChessPosition('b',1).toPosition());
-		//this.getBoard().placePiece(new Rook(this.board, Color.WHITE), new ChessPosition('h',1).toPosition());
-		//this.getBoard().placePiece(new King(this.board, Color.BLACK), new ChessPosition('f',7).toPosition());
-		this.getBoard().placePiece(new Rook(this.board, Color.BLACK), new ChessPosition('h',1).toPosition());
+		//this.getBoard().placePiece(new King(this.board, Color.WHITE), new ChessPosition('d',3).toPosition());
+		this.getBoard().placePiece(new Rook(this.board, Color.WHITE), new ChessPosition('d',1).toPosition());
+		this.getBoard().placePiece(new King(this.board, Color.BLACK), new ChessPosition('d',3).toPosition());
+		//this.getBoard().placePiece(new Rook(this.board, Color.BLACK), new ChessPosition('d',2).toPosition());
 
 	}
 
@@ -112,5 +114,17 @@ public class ChessMatch {
 		return currentPlayer;
 		
 	}
+	
+	public void loadPiecesOnBoardList() {
+		ChessPiece[][] chessPieces = this.getPieces();
+		for (int i =0; i<chessPieces.length; i++) {
+			for (int j =0; j<chessPieces.length; j++) {
+				piecesOnTheBoard.add(chessPieces[i][j]);
+			}
+		}
+	}
+	
+	
+	
 
 }

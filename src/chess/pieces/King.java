@@ -30,10 +30,21 @@ public class King extends ChessPiece {
 			mat[pos.getRow()][pos.getColumn()] = true;
 		}
 
+		if (pos.getColumn() >= 0 && pos.getColumn() <= 7 && pos.getRow() >= 0 && pos.getRow() <= 7
+				&& this.isThereOpponentPiece(pos)) {
+
+			mat[pos.getRow()][pos.getColumn()] = true;
+		}
+
 		// south
 		pos.setValues(this.position.getRow() + 1, this.position.getColumn());
 		if (pos.getColumn() >= 0 && pos.getColumn() <= 7 && pos.getRow() >= 0 && pos.getRow() <= 7
 				&& !this.getBoard().thereIsAPiece(pos)) {
+
+			mat[pos.getRow()][pos.getColumn()] = true;
+		}
+		if (pos.getColumn() >= 0 && pos.getColumn() <= 7 && pos.getRow() >= 0 && pos.getRow() <= 7
+				&& this.isThereOpponentPiece(pos)) {
 
 			mat[pos.getRow()][pos.getColumn()] = true;
 		}
@@ -45,11 +56,21 @@ public class King extends ChessPiece {
 
 			mat[pos.getRow()][pos.getColumn()] = true;
 		}
+		if (pos.getColumn() >= 0 && pos.getColumn() <= 7 && pos.getRow() >= 0 && pos.getRow() <= 7
+				&& this.isThereOpponentPiece(pos)) {
+
+			mat[pos.getRow()][pos.getColumn()] = true;
+		}
 
 		// right
 		pos.setValues(this.position.getRow(), this.position.getColumn() + 1);
 		if (pos.getColumn() >= 0 && pos.getColumn() <= 7 && pos.getRow() >= 0 && pos.getRow() <= 7
 				&& !this.getBoard().thereIsAPiece(pos)) {
+
+			mat[pos.getRow()][pos.getColumn()] = true;
+		}
+		if (pos.getColumn() >= 0 && pos.getColumn() <= 7 && pos.getRow() >= 0 && pos.getRow() <= 7
+				&& this.isThereOpponentPiece(pos)) {
 
 			mat[pos.getRow()][pos.getColumn()] = true;
 		}
@@ -61,11 +82,21 @@ public class King extends ChessPiece {
 
 			mat[pos.getRow()][pos.getColumn()] = true;
 		}
+		if (pos.getColumn() >= 0 && pos.getColumn() <= 7 && pos.getRow() >= 0 && pos.getRow() <= 7
+				&& this.isThereOpponentPiece(pos)) {
+
+			mat[pos.getRow()][pos.getColumn()] = true;
+		}
 
 		// north-east
 		pos.setValues(this.position.getRow() - 1, this.position.getColumn() + 1);
 		if (pos.getColumn() >= 0 && pos.getColumn() <= 7 && pos.getRow() >= 0 && pos.getRow() <= 7
 				&& !this.getBoard().thereIsAPiece(pos)) {
+
+			mat[pos.getRow()][pos.getColumn()] = true;
+		}
+		if (pos.getColumn() >= 0 && pos.getColumn() <= 7 && pos.getRow() >= 0 && pos.getRow() <= 7
+				&& this.isThereOpponentPiece(pos)) {
 
 			mat[pos.getRow()][pos.getColumn()] = true;
 		}
@@ -77,11 +108,21 @@ public class King extends ChessPiece {
 
 			mat[pos.getRow()][pos.getColumn()] = true;
 		}
+		if (pos.getColumn() >= 0 && pos.getColumn() <= 7 && pos.getRow() >= 0 && pos.getRow() <= 7
+				&& this.isThereOpponentPiece(pos)) {
+
+			mat[pos.getRow()][pos.getColumn()] = true;
+		}
 
 		// south-east
 		pos.setValues(this.position.getRow() + 1, this.position.getColumn() + 1);
 		if (pos.getColumn() >= 0 && pos.getColumn() <= 7 && pos.getRow() >= 0 && pos.getRow() <= 7
 				&& !this.getBoard().thereIsAPiece(pos)) {
+
+			mat[pos.getRow()][pos.getColumn()] = true;
+		}
+		if (pos.getColumn() >= 0 && pos.getColumn() <= 7 && pos.getRow() >= 0 && pos.getRow() <= 7
+				&& this.isThereOpponentPiece(pos)) {
 
 			mat[pos.getRow()][pos.getColumn()] = true;
 		}
