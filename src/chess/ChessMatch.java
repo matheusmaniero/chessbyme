@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import boardgame.Board;
-import boardgame.Piece;
+import boardgame.Position;
 import chess.pieces.King;
 import chess.pieces.Rook;
 
@@ -15,6 +15,7 @@ public class ChessMatch {
 	private Color currentPlayer = Color.WHITE;
 	private List<ChessPiece> piecesOnTheBoard = new ArrayList<>();
 	private List<ChessPiece> capturedPieces = new ArrayList<>();
+	private boolean check;
 
 	public ChessMatch() {
 		this.board = new Board(8, 8);
@@ -22,12 +23,10 @@ public class ChessMatch {
 		loadPiecesOnBoardList();
 
 	}
-	
 
 	public Integer getTurn() {
 		return turn;
 	}
-
 
 	public Color getCurrentPlayer() {
 		return currentPlayer;
@@ -64,10 +63,54 @@ public class ChessMatch {
 		if (!(this.validateSourcePosition(sourcePosition)
 				&& this.validateTargetPosition(targetPosition, sourcePosition))) {
 			throw new ChessException("Is not possible to move to this position");
+
 		} else {
-			this.makeMove(sourcePosition, targetPosition);
-			this.nextTurn();
+
+			if (!this.check) {
+				this.makeMove(sourcePosition, targetPosition);
+				this.testCheck(targetPosition);
+				this.nextTurn();
+			} else {
+				this.makeMove(sourcePosition, targetPosition);
+				this.nextTurn();
+				if (this.isTheKingUnderCheck()) {
+					this.undoMove(targetPosition, sourcePosition);
+
+				}
+			}
+
 		}
+	}
+
+	public boolean isTheKingUnderCheck() {
+
+		ChessPiece[][] mat = this.getPieces();
+		ChessPiece opKing = null;
+
+		for (int i = 0; i < mat.length; i++) {
+			for (int j = 0; j < mat.length; j++) {
+				if (mat[i][j] instanceof King && mat[i][j].getColor() != this.currentPlayer) {
+					opKing = mat[i][j];
+				}
+			}
+
+		}
+
+		Position enemyKingPosition = opKing.getPosition();
+
+		for (int i = 0; i < mat.length; i++) {
+			for (int j = 0; j < mat.length; j++) {
+				if (mat[i][j] instanceof ChessPiece && mat[i][j].getColor() == this.currentPlayer) {
+					ChessPiece piece = mat[i][j];
+					if (piece.possibleMove(enemyKingPosition)) {
+						return true;
+					}
+
+				}
+			}
+
+		}
+		return false;
 
 	}
 
@@ -95,6 +138,7 @@ public class ChessMatch {
 	}
 
 	public void makeMove(ChessPosition sourcePosition, ChessPosition targetPosition) {
+
 		ChessPiece movingPiece = (ChessPiece) this.getBoard().removePiece(sourcePosition.toPosition());
 		if (this.getBoard().thereIsAPiece(targetPosition.toPosition())) {
 			ChessPiece pieceOnTarget = (ChessPiece) this.getBoard().piece(targetPosition.toPosition());
@@ -107,10 +151,20 @@ public class ChessMatch {
 		this.getBoard().placePiece(movingPiece, targetPosition.toPosition());
 	}
 
+	public void undoMove(ChessPosition sourcePosition, ChessPosition targetPosition) {
+		ChessPiece movingPiece = (ChessPiece) this.getBoard().removePiece(sourcePosition.toPosition());
+		this.getBoard().placePiece(movingPiece, targetPosition.toPosition());
+		this.capturedPieces.removeIf(x -> x == movingPiece);
+		this.piecesOnTheBoard.add(movingPiece);
+		this.nextTurn();
+		this.turn--;
+		this.turn--;
+	}
+
 	public void initialSetup() {
 
 		this.getBoard().placePiece(new King(this.board, Color.WHITE), new ChessPosition('a', 3).toPosition());
-		this.getBoard().placePiece(new Rook(this.board, Color.WHITE), new ChessPosition('d', 1).toPosition());
+		this.getBoard().placePiece(new Rook(this.board, Color.WHITE), new ChessPosition('c', 1).toPosition());
 		this.getBoard().placePiece(new King(this.board, Color.BLACK), new ChessPosition('d', 3).toPosition());
 		this.getBoard().placePiece(new Rook(this.board, Color.BLACK), new ChessPosition('f', 2).toPosition());
 
@@ -146,6 +200,28 @@ public class ChessMatch {
 				piecesOnTheBoard.add(chessPieces[i][j]);
 			}
 		}
+	}
+
+	public boolean testCheck(ChessPosition targetPosition) {
+		ChessPiece[][] mat = this.getPieces();
+		ChessPiece opKing = null;
+		boolean[][] possibleMoves = this.possibleMoves(targetPosition);
+
+		for (int i = 0; i < mat.length; i++) {
+			for (int j = 0; j < mat.length; j++) {
+				if (mat[i][j] instanceof King && mat[i][j].getColor() != this.currentPlayer) {
+					opKing = mat[i][j];
+				}
+			}
+
+		}
+
+		if (possibleMoves[opKing.getPosition().getRow()][opKing.getPosition().getColumn()]) {
+			this.check = true;
+			return true;
+		}
+		this.check = false;
+		return false;
 	}
 
 }

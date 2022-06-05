@@ -99,8 +99,9 @@ public class UI {
 				Integer.parseInt(targetString.substring(1)));
 
 		chessMatch.getBoard().positionExists(targetChessPosition.toPosition());
-
+		
 		chessMatch.performChessMove(sourceChessPosition, targetChessPosition);
+		
 		clearScreen();
 	}
 
