@@ -159,5 +159,16 @@ public class UI {
 		sb.append(ANSI_YELLOW + "Black play now" + ANSI_RESET);
 		return sb.toString();
 	}
+	
+	
+	public static String printCheck(ChessMatch chessMatch) {
+		if (chessMatch.isCheck()) {
+			
+			return "You are in Check!";
+			
+			
+		}
+		return "";
+	}
 
 }

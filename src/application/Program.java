@@ -25,6 +25,7 @@ public class Program {
 				System.out.println(UI.printBlackCapturedPieces(chessMatch.getCapturedPieces()));
 				System.out.println();
 				System.out.println(UI.printTurn(chessMatch));
+				System.out.println(UI.printCheck(chessMatch));
 				
 
 				UI.readChessPosition(sc, chessMatch);

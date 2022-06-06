@@ -24,6 +24,10 @@ public class ChessMatch {
 
 	}
 
+	public boolean isCheck() {
+		return check;
+	}
+
 	public Integer getTurn() {
 		return turn;
 	}
@@ -59,21 +63,33 @@ public class ChessMatch {
 	}
 
 	public void performChessMove(ChessPosition sourcePosition, ChessPosition targetPosition) {
-
+		ChessPiece[][] mat = getPieces();
 		if (!(this.validateSourcePosition(sourcePosition)
 				&& this.validateTargetPosition(targetPosition, sourcePosition))) {
 			throw new ChessException("Is not possible to move to this position");
 
 		} else {
 
-			if (!this.check) {
+			ChessPiece piece = (ChessPiece) this.board.piece(sourcePosition.toPosition());
+
+			if (piece instanceof King) {
+				this.makeMove(sourcePosition, targetPosition);
+				this.nextTurn();
+				if (isTheKingUnderCheck()) {
+					this.undoMove(targetPosition, sourcePosition);
+					throw new ChessException("You can't put yourself in check!");
+				}
+
+			} else if (!this.check) {
+
 				this.makeMove(sourcePosition, targetPosition);
 				this.testCheck(targetPosition);
+
 				this.nextTurn();
 			} else {
 				this.makeMove(sourcePosition, targetPosition);
 				this.nextTurn();
-				if (this.isTheKingUnderCheck()) {
+				if (isTheKingUnderCheck()) {
 					this.undoMove(targetPosition, sourcePosition);
 
 				}
@@ -103,6 +119,7 @@ public class ChessMatch {
 				if (mat[i][j] instanceof ChessPiece && mat[i][j].getColor() == this.currentPlayer) {
 					ChessPiece piece = mat[i][j];
 					if (piece.possibleMove(enemyKingPosition)) {
+						this.check = true;
 						return true;
 					}
 
@@ -110,6 +127,7 @@ public class ChessMatch {
 			}
 
 		}
+		this.check = false;
 		return false;
 
 	}
@@ -164,8 +182,8 @@ public class ChessMatch {
 	public void initialSetup() {
 
 		this.getBoard().placePiece(new King(this.board, Color.WHITE), new ChessPosition('a', 3).toPosition());
-		this.getBoard().placePiece(new Rook(this.board, Color.WHITE), new ChessPosition('c', 1).toPosition());
-		this.getBoard().placePiece(new King(this.board, Color.BLACK), new ChessPosition('d', 3).toPosition());
+		this.getBoard().placePiece(new Rook(this.board, Color.WHITE), new ChessPosition('d', 3).toPosition());
+		this.getBoard().placePiece(new King(this.board, Color.BLACK), new ChessPosition('e', 2).toPosition());
 		this.getBoard().placePiece(new Rook(this.board, Color.BLACK), new ChessPosition('f', 2).toPosition());
 
 	}
