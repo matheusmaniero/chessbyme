@@ -16,12 +16,17 @@ public class ChessMatch {
 	private List<ChessPiece> piecesOnTheBoard = new ArrayList<>();
 	private List<ChessPiece> capturedPieces = new ArrayList<>();
 	private boolean check;
+	private boolean checkMate;
 
 	public ChessMatch() {
 		this.board = new Board(8, 8);
 		initialSetup();
 		loadPiecesOnBoardList();
 
+	}
+
+	public boolean isCheckMate() {
+		return checkMate;
 	}
 
 	public boolean isCheck() {
@@ -62,15 +67,17 @@ public class ChessMatch {
 
 	}
 
-	public void performChessMove(ChessPosition sourcePosition, ChessPosition targetPosition) {
+	public void performChessMove(ChessPosition sourceChessPosition, ChessPosition targetChessPosition) {
+		Position sourcePosition = sourceChessPosition.toPosition();
+		Position targetPosition = targetChessPosition.toPosition();
 		ChessPiece[][] mat = getPieces();
-		if (!(this.validateSourcePosition(sourcePosition)
-				&& this.validateTargetPosition(targetPosition, sourcePosition))) {
+		if (!(this.validateSourcePosition(sourceChessPosition)
+				&& this.validateTargetPosition(targetChessPosition, sourceChessPosition))) {
 			throw new ChessException("Is not possible to move to this position");
 
 		} else {
 
-			ChessPiece piece = (ChessPiece) this.board.piece(sourcePosition.toPosition());
+			ChessPiece piece = (ChessPiece) this.board.piece(sourcePosition);
 
 			if (piece instanceof King) {
 				this.makeMove(sourcePosition, targetPosition);
@@ -83,12 +90,14 @@ public class ChessMatch {
 			} else if (!this.check) {
 
 				this.makeMove(sourcePosition, targetPosition);
-				this.testCheck(targetPosition);
+				this.testCheck(targetChessPosition);
 
 				this.nextTurn();
+				this.testCheckMate();
 			} else {
 				this.makeMove(sourcePosition, targetPosition);
 				this.nextTurn();
+				this.testCheckMate();
 				if (isTheKingUnderCheck()) {
 					this.undoMove(targetPosition, sourcePosition);
 
@@ -101,18 +110,20 @@ public class ChessMatch {
 	public boolean isTheKingUnderCheck() {
 
 		ChessPiece[][] mat = this.getPieces();
-		ChessPiece opKing = null;
+		Position enemyKingPosition = new Position(0,0);
+		
 
 		for (int i = 0; i < mat.length; i++) {
 			for (int j = 0; j < mat.length; j++) {
 				if (mat[i][j] instanceof King && mat[i][j].getColor() != this.currentPlayer) {
-					opKing = mat[i][j];
+					ChessPiece opKing = mat[i][j];
+					enemyKingPosition.setValues(i, j);
 				}
 			}
 
 		}
 
-		Position enemyKingPosition = opKing.getPosition();
+		 
 
 		for (int i = 0; i < mat.length; i++) {
 			for (int j = 0; j < mat.length; j++) {
@@ -155,23 +166,23 @@ public class ChessMatch {
 		}
 	}
 
-	public void makeMove(ChessPosition sourcePosition, ChessPosition targetPosition) {
+	public void makeMove(Position sourcePosition, Position targetPosition) {
 
-		ChessPiece movingPiece = (ChessPiece) this.getBoard().removePiece(sourcePosition.toPosition());
-		if (this.getBoard().thereIsAPiece(targetPosition.toPosition())) {
-			ChessPiece pieceOnTarget = (ChessPiece) this.getBoard().piece(targetPosition.toPosition());
+		ChessPiece movingPiece = (ChessPiece) this.getBoard().removePiece(sourcePosition);
+		if (this.getBoard().thereIsAPiece(targetPosition)) {
+			ChessPiece pieceOnTarget = (ChessPiece) this.getBoard().piece(targetPosition);
 			if (pieceOnTarget.getColor() != currentPlayer) {
 				this.piecesOnTheBoard.removeIf(x -> x == pieceOnTarget);
 				this.capturedPieces.add(pieceOnTarget);
 			}
 		}
 
-		this.getBoard().placePiece(movingPiece, targetPosition.toPosition());
+		this.getBoard().placePiece(movingPiece, targetPosition);
 	}
 
-	public void undoMove(ChessPosition sourcePosition, ChessPosition targetPosition) {
-		ChessPiece movingPiece = (ChessPiece) this.getBoard().removePiece(sourcePosition.toPosition());
-		this.getBoard().placePiece(movingPiece, targetPosition.toPosition());
+	public void undoMove(Position sourcePosition, Position targetPosition) {
+		ChessPiece movingPiece = (ChessPiece) this.getBoard().removePiece(sourcePosition);
+		this.getBoard().placePiece(movingPiece, targetPosition);
 		this.capturedPieces.removeIf(x -> x == movingPiece);
 		this.piecesOnTheBoard.add(movingPiece);
 		this.nextTurn();
@@ -184,8 +195,10 @@ public class ChessMatch {
 		this.getBoard().placePiece(new King(this.board, Color.WHITE), new ChessPosition('a', 3).toPosition());
 		this.getBoard().placePiece(new Rook(this.board, Color.WHITE), new ChessPosition('d', 3).toPosition());
 		this.getBoard().placePiece(new King(this.board, Color.BLACK), new ChessPosition('e', 2).toPosition());
-		this.getBoard().placePiece(new Rook(this.board, Color.BLACK), new ChessPosition('f', 2).toPosition());
-
+		this.getBoard().placePiece(new Rook(this.board, Color.BLACK), new ChessPosition('b', 4).toPosition());
+		this.getBoard().placePiece(new Rook(this.board, Color.BLACK), new ChessPosition('b', 2).toPosition());
+		this.getBoard().placePiece(new Rook(this.board, Color.BLACK), new ChessPosition('b', 7).toPosition());
+		this.getBoard().placePiece(new Rook(this.board, Color.BLACK), new ChessPosition('e', 3).toPosition());
 	}
 
 	public boolean[][] possibleMoves(ChessPosition sourcePosition) {
@@ -240,6 +253,39 @@ public class ChessMatch {
 		}
 		this.check = false;
 		return false;
+	}
+
+	public boolean testCheckMate() {
+		if (!this.check) {
+			return false;
+		}
+		boolean checkMate = false;
+		ChessPiece[][] allPieces = this.getPieces();
+		ChessPiece king = null;
+		for (int i = 0; i < allPieces.length; i++) {
+			for (int j = 0; j < allPieces.length; j++) {
+				if (allPieces[i][j] instanceof King && allPieces[i][j].getColor() != this.currentPlayer) {
+					king = allPieces[i][j];
+				}
+			}
+		}
+
+		Position sourceKingPosition = king.getChessPosition().toPosition();
+		boolean[][] kingPossibleMoves = king.possibleMoves();
+		for (int i = 0; i < kingPossibleMoves.length; i++) {
+			for (int j = 0; j < kingPossibleMoves.length; j++) {
+				Position targetToTest = new Position(i, j);
+				makeMove(sourceKingPosition, targetToTest);
+				if (isTheKingUnderCheck()) {
+					checkMate = true;
+				}
+				undoMove(targetToTest, sourceKingPosition);
+			}
+
+		}
+		this.checkMate = checkMate;
+		return checkMate;
+
 	}
 
 }

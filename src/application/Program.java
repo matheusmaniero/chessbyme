@@ -15,7 +15,7 @@ public class Program {
 
 		chessMatch = new ChessMatch();
 
-		while (true) {
+		while (!chessMatch.isCheckMate()) {
 
 			try {
 				UI.printBoard(chessMatch);
@@ -37,8 +37,12 @@ public class Program {
 				System.out.println();
 
 			}
+			
+			
 
 		}
+		
+		System.out.println("CHECK MATE!");
 
 	}
 
